@@ -224,12 +224,12 @@
                 </a>
             </div>
             <div class="flex items-center gap-1.5 md:gap-6">
-                <!-- Quick Navigation - Now visible on small screens with min-width -->
+                <!-- Quick Navigation - Hidden on mobile, visible on desktop -->
                 <div
-                    class="flex items-center gap-1 md:gap-3 bg-parchment dark:bg-slate-800 rounded-lg py-0.5 px-1.5 md:px-3 border border-primary/10">
+                    class="hidden md:flex items-center gap-1 md:gap-3 bg-parchment dark:bg-slate-800 rounded-lg py-0.5 px-1.5 md:px-3 border border-primary/10">
                     <div class="relative">
                         <select id="chapter-select-header"
-                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 md:pr-6 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none">
+                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 md:pr-6 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-8 md:w-auto">
                             <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
                                 I
                             </option>
@@ -246,7 +246,7 @@
                     <div class="w-px h-3 bg-primary/20 mx-1"></div>
                     <div class="relative">
                         <select id="sutra-select-header"
-                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif w-10 md:w-16 appearance-none font-medium outline-none">
+                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif w-8 md:w-16 appearance-none font-medium outline-none">
                             <!-- Populated by JS -->
                         </select>
                         <span
@@ -268,6 +268,35 @@
             </div>
         </header>
 
+        <!-- Mobile Floating Navigation Bar -->
+        <!-- Mobile Floating Navigation Bar -->
+        <!-- Mobile Floating Navigation Bar -->
+        <div class="md:hidden fixed top-16 left-0 right-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-primary/10 px-4 py-2 flex items-center justify-center transition-transform duration-300"
+            id="mobile-nav-bar">
+            <div
+                class="flex items-center gap-2 bg-parchment dark:bg-slate-800 rounded-lg py-1 px-4 border border-primary/10 shadow-sm w-full justify-center max-w-sm">
+                <div class="relative flex-1 text-center">
+                    <select id="chapter-select-mobile"
+                        class="bg-transparent border-none text-xs p-0 pr-4 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-full text-center">
+                        <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 1</option>
+                        <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 2</option>
+                        <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 3</option>
+                        <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 4</option>
+                    </select>
+                    <span
+                        class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
+                </div>
+                <div class="w-px h-3 bg-primary/20 mx-2"></div>
+                <div class="relative flex-1 text-center">
+                    <select id="sutra-select-mobile"
+                        class="bg-transparent border-none text-xs p-0 pr-4 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-full text-center">
+                        <!-- Populated by JS -->
+                    </select>
+                    <span
+                        class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
+                </div>
+            </div>
+        </div>
         <!-- Main Workspace -->
         <div class="flex flex-1 overflow-hidden relative">
             <!-- Left Sidebar: Navigation Drawer -->
@@ -293,7 +322,8 @@
 
             <!-- Center Content: The Sutra -->
             <main class="flex-1 flex flex-col h-full overflow-hidden relative" id="main-content">
-                <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scroll-smooth" id="sutra-detail-view">
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 pt-16 md:pt-8 scroll-smooth"
+                    id="sutra-detail-view">
                     <!-- Detailed Sutra Content injected by JS -->
                     <div class="flex items-center justify-center h-full text-slate-400 italic">
                         Select a Sutra to begin...

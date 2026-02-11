@@ -146,7 +146,8 @@ const sutraCounts = {
 function setupQuickJump() {
     // Initialize quick jump for both landing and header
     initQuickJump('chapter-select-landing', 'sutra-select-landing', 'quick-jump-btn-landing');
-    initQuickJump('chapter-select-header', 'sutra-select-header', 'quick-jump-btn-header');
+    initQuickJump('chapter-select-header', 'sutra-select-header', 'quick-jump-btn-header'); // Desktop
+    initQuickJump('chapter-select-mobile', 'sutra-select-mobile', 'quick-jump-btn-mobile'); // Mobile Floating
 }
 
 function initQuickJump(chapterId, sutraId, btnId) {
@@ -302,8 +303,8 @@ function loadSutra(id) {
                 <h2 class="text-xl md:text-2xl font-light text-slate-600 dark:text-slate-400 italic mb-8 font-serif break-keep break-words">
                     ${sutra.pronunciation || ''}
                 </h2>
-                <div class="text-lg text-slate-500 dark:text-slate-500 mb-8 font-kr-serif break-keep break-words">
-                    ${sutra.pronunciation_kr || ''}
+                <div class="text-lg text-slate-500 dark:text-slate-500 mb-8 font-kr-serif break-keep break-words leading-relaxed">
+                    ${formatPronunciationKr(sutra.pronunciation_kr || '')}
                 </div>
 
                 <!-- Audio Player -->
@@ -355,6 +356,25 @@ function loadSutra(id) {
 }
 
 // Helper to remove diacritics and common Sandhi endings for easier matching
+function formatPronunciationKr(text) {
+    if (!text) return '';
+    // Split by '｜' and wrap each chunk in an inline-block span to prevent internal breaking
+    // We include the separator in the chunk so it stays with the preceding word, or manage it separately.
+    // User wants "break unit by ｜".
+    return text.split('｜').map(chunk => {
+        // Trim and only wrap if not empty
+        const trimmed = chunk.trim();
+        if (!trimmed) return '';
+        return `<span class="inline-block whitespace-nowrap">${trimmed}</span>`;
+    }).join('<span class="mx-1 opacity-50">｜</span>'); // Re-insert separator with visual styling if needed, or just space.
+    // Actually, user said "break unit by ｜". If the original text has ｜, we should probably keep it or use it as the split point.
+    // Let's assume the input string has ｜.
+    // Example: "아타｜요가｜아누사사남"
+    // Result: <span>아타</span> <span>｜</span> <span>요가</span> ...
+    // Better: keep ｜ with the word? "아타 ｜" -> no, usually separator is central.
+    // Let's try: <span>chunk</span> <span class="mx-1">｜</span> <span>chunk</span>
+}
+
 function normalizeText(text) {
     let normalized = text.toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove diacritics
@@ -1067,3 +1087,150 @@ window.loadSutra = function (id) {
         closeAllSidebars();
     }
 };
+
+// --- Mobile Floating Nav Scroll Logic ---
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollContainer = document.getElementById('sutra-detail-view');
+    const mobileNav = document.getElementById('mobile-nav-bar');
+    let lastScrollY = 0;
+
+    if (scrollContainer && mobileNav) {
+        scrollContainer.addEventListener('scroll', () => {
+            const currentScrollY = scrollContainer.scrollTop;
+
+            // If scrolling down and not at the top, hide nav
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                mobileNav.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            } else {
+                // Scrolling up or at top, show nav
+                mobileNav.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            }
+
+            lastScrollY = currentScrollY;
+        });
+    }
+});
+
+// --- User Note Logic ---
+
+function loadUserNote(sutraId) {
+    const noteArea = document.getElementById('user-note-area');
+    const noteIdDisplay = document.getElementById('note-sutra-id');
+
+    if (noteArea && noteIdDisplay) {
+        noteIdDisplay.textContent = sutraId;
+        noteArea.value = localStorage.getItem(`note-${sutraId}`) || '';
+        // Save current sutra ID to a data attribute for saving later
+        noteArea.dataset.currentSutraId = sutraId;
+    }
+}
+
+window.saveNote = function () {
+    const noteArea = document.getElementById('user-note-area');
+    // Get sutra ID from data attribute or try to infer from UI if possible, 
+    // but data attribute set by loadUserNote is safest.
+    // Fallback: get from the display span
+    const noteIdDisplay = document.getElementById('note-sutra-id');
+    const sutraId = noteArea.dataset.currentSutraId || (noteIdDisplay ? noteIdDisplay.textContent : null);
+
+    if (sutraId && noteArea) {
+        const content = noteArea.value;
+        localStorage.setItem(`note-${sutraId}`, content);
+
+        // Show Custom Toast instead of alert
+        showToast("Note saved successfully", "success");
+    } else {
+        showToast("Error: No active sutra selected", "error");
+    }
+};
+
+window.exportNotes = function () {
+    let content = "Yoga Sutras - My Reflections\n\n";
+    let hasNotes = false;
+
+    // Iterate all keys
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('note-')) {
+            const id = key.substring(5);
+            const note = localStorage.getItem(key);
+            if (note && note.trim()) {
+                content += `[Sutra ${id}]\n${note}\n\n-------------------\n\n`;
+                hasNotes = true;
+            }
+        }
+    }
+
+    if (!hasNotes) {
+        showToast("No notes to export.", "warning");
+        return;
+    }
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `yoga_sutras_notes_${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast("Notes exported to text file", "success");
+};
+
+// --- Toast Notification System ---
+function showToast(message, type = 'success') {
+    // Check if toast container exists, create if not
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center pointer-events-none';
+        document.body.appendChild(container);
+    }
+
+    // Create Toast Element
+    const toast = document.createElement('div');
+
+    // Theme colors matching chapter design
+    // Success: Gold/Primary
+    // Error: Red
+    // Warning: Orange
+
+    let colors = "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-primary/40";
+    let icon = "check_circle";
+    let iconColor = "text-primary";
+
+    if (type === 'error') {
+        colors = "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-red-500/40";
+        icon = "error";
+        iconColor = "text-red-500";
+    } else if (type === 'warning') {
+        colors = "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-orange-500/40";
+        icon = "warning";
+        iconColor = "text-orange-500";
+    }
+
+    toast.className = `flex items-center gap-3 px-6 py-3 rounded-full shadow-xl border ${colors} transform transition-all duration-300 translate-y-8 opacity-0 pointer-events-auto min-w-[300px] max-w-sm backdrop-blur-sm bg-white/95 dark:bg-slate-800/95`;
+
+    toast.innerHTML = `
+        <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+        <span class="text-sm font-medium font-serif">${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Animate In
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-8', 'opacity-0');
+    });
+
+    // Remove after delay
+    setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 300);
+    }, 3000);
+}
