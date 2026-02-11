@@ -506,15 +506,22 @@ function renderTranslations(sutra) {
 
 
 function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClass) {
-    const contents = keys.map(key => `
-        <div class="mb-4 last:mb-0">
-            <div class="text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">${formatLabel(key)}</div>
-            <blockquote class="text-lg text-slate-700 dark:text-slate-300 font-kr-serif leading-relaxed pl-4 border-l-2 border-primary/20 break-keep break-words whitespace-pre-wrap">${(sutra[key] || '').trim()}</blockquote>
+    const contents = keys.map(key => {
+        // Determine language for typography
+        const isEnglish = key.includes('english') || key.includes('ox-en');
+        const langClass = isEnglish ? 'lang-en' : 'lang-ko';
+
+        return `
+        <div class="mb-6 last:mb-0">
+            <div class="section-label">${formatLabel(key)}</div>
+            <div class="content-block">
+                <blockquote class="${langClass} text-[1.05rem] text-[#1f2937] dark:text-[#d1d5db] whitespace-pre-wrap">${(sutra[key] || '').trim()}</blockquote>
+            </div>
         </div>
-    `).join('');
+    `}).join('');
 
     return `
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-primary/10 hover:border-primary/40 transition-all hover:shadow-md group text-left">
+        <div class="max-w-[720px] mx-auto bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-primary/10 hover:border-primary/40 transition-all hover:shadow-md group text-left">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center gap-3">
                     <div class="size-10 rounded-full ${iconClass} flex items-center justify-center">
