@@ -8,7 +8,7 @@ function checkPassword(event) {
     if (event) event.preventDefault();
     const input = document.getElementById('app-password');
     const gate = document.getElementById('password-gate');
-    const content = document.getElementById('main-content') || document.getElementById('landing-page');
+    const content = document.getElementById('app-wrapper') || document.getElementById('main-content') || document.getElementById('landing-page');
     const error = document.getElementById('password-error');
 
     if (input.value === MASTER_PASSWORD) {
@@ -62,7 +62,7 @@ function initAuthGate() {
     }
 
     const gate = document.getElementById('password-gate');
-    const content = document.getElementById('main-content') || document.getElementById('landing-page');
+    const content = document.getElementById('app-wrapper') || document.getElementById('main-content') || document.getElementById('landing-page');
 
     // Check if we are on the landing page (index.html) by looking for the gate element
     const isLandingPage = !!gate;

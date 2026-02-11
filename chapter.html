@@ -155,14 +155,14 @@
                     var g = document.getElementById('password-gate');
                     if (g) { g.style.display = 'none'; g.classList.add('hidden'); }
                     document.body.classList.remove('overflow-hidden');
-                    var ctt = document.getElementById('main-content') || document.getElementById('landing-page');
+                    var ctt = document.getElementById('app-wrapper') || document.getElementById('main-content') || document.getElementById('landing-page');
                     if (ctt) { ctt.classList.remove('invisible'); ctt.classList.add('opacity-100'); }
                 }
             } catch (e) { }
         })();
     </script>
 
-    <div id="main-content" class="transition-all duration-700 flex flex-col h-screen">
+    <div id="app-wrapper" class="transition-all duration-700 flex flex-col h-[100dvh] overflow-hidden">
         <!-- Top Navigation -->
         <header
             class="h-16 border-b border-primary/20 bg-background-light dark:bg-background-dark flex items-center justify-between px-4 md:px-6 shrink-0 z-30">
