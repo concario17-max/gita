@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Search Results - Yoga Sutra Study</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ecc813",
+                        "background-light": "#fcfbf8", 
+                        "background-dark": "#221f10",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2c2918",
+                        "text-main": "#1b190d",
+                        "text-muted": "#6b664c",
+                        "border-color": "#f3f1e7",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Serif", "serif"], /* Overriding sans to enforce serif everywhere for this classic theme */
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Serif', serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d1c0; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c0bca8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main flex flex-col antialiased selection:bg-primary/30 selection:text-text-main">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-border-color bg-background-light/95 backdrop-blur supports-[backdrop-filter]:bg-background-light/80 dark:bg-background-dark/95 dark:border-surface-dark">
+<div class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-4 text-text-main">
+<div class="text-primary">
+<span class="material-symbols-outlined text-[32px]">spa</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-text-main dark:text-white">Yoga Sutra Study</h1>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-sm font-medium hover:text-primary transition-colors dark:text-gray-200" href="#">Study</a>
+<a class="text-sm font-medium hover:text-primary transition-colors dark:text-gray-200" href="#">Glossary</a>
+<a class="text-sm font-medium hover:text-primary transition-colors dark:text-gray-200" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-text-main dark:text-white">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row gap-8">
+<!-- Left Sidebar: Search & Filters -->
+<aside class="w-full md:w-80 flex-shrink-0 flex flex-col gap-8">
+<!-- Search Input Box -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-color shadow-sm dark:border-white/5">
+<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted mb-4 dark:text-gray-400">Search</h2>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="w-full pl-10 pr-10 py-3 bg-background-light dark:bg-background-dark border border-border-color rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all dark:text-white dark:border-white/10" placeholder="Search sutras..." type="text" value="Citta"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-lg">cancel</span>
+</button>
+</div>
+<div class="mt-3 text-xs text-text-muted dark:text-gray-500">
+                    Showing 15 results
+                </div>
+</div>
+<!-- Filters Section -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-color shadow-sm dark:border-white/5 flex flex-col gap-6">
+<!-- Filter by Pada -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-text-muted mb-4 dark:text-gray-400">Filter by Pada</h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Samadhi Pada <span class="text-text-muted text-sm ml-1 dark:text-gray-500">(5)</span></span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Sadhana Pada <span class="text-text-muted text-sm ml-1 dark:text-gray-500">(4)</span></span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Vibhuti Pada <span class="text-text-muted text-sm ml-1 dark:text-gray-500">(3)</span></span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Kaivalya Pada <span class="text-text-muted text-sm ml-1 dark:text-gray-500">(3)</span></span>
+</label>
+</div>
+</div>
+<div class="h-px bg-border-color dark:bg-white/10 w-full"></div>
+<!-- Filter by Translator -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-text-muted mb-4 dark:text-gray-400">Translations</h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Vyasa</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Iyengar</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-2 border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+<span class="text-base group-hover:text-primary transition-colors dark:text-gray-200">Satchidananda</span>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Content: Search Results -->
+<div class="flex-1 flex flex-col gap-6">
+<!-- Result Header -->
+<div class="flex items-baseline justify-between mb-2">
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Results for "<span class="text-primary italic">Citta</span>"</h2>
+<div class="flex items-center gap-2">
+<span class="text-sm text-text-muted dark:text-gray-400">Sort by:</span>
+<select class="bg-transparent border-none text-sm font-semibold text-text-main cursor-pointer focus:ring-0 pr-8 dark:text-white">
+<option>Relevance</option>
+<option>Sutra Number</option>
+</select>
+</div>
+</div>
+<!-- Result Card 1 -->
+<a class="group block bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-border-color shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300 dark:border-white/5 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                            Samadhi Pada 1.2
+                        </span>
+<span class="text-text-muted group-hover:text-primary transition-colors dark:text-gray-500">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</span>
+</div>
+<div>
+<p class="text-xl font-medium text-text-main leading-relaxed mb-2 font-display dark:text-gray-200">
+                            yogaś <span class="bg-primary/20 px-1 rounded mx-0.5 dark:text-white">citta</span>-vṛtti-nirodhaḥ
+                        </p>
+<p class="text-3xl text-gray-800 font-display mb-4 dark:text-white">
+                            योगश्चित्तवृत्तिनिरोधः
+                        </p>
+</div>
+<div class="h-px bg-border-color w-full dark:bg-white/10"></div>
+<div class="space-y-2">
+<p class="text-lg text-text-muted leading-relaxed italic dark:text-gray-400">
+                            "Yoga is the restriction of the fluctuations of consciousness (<span class="bg-primary/20 px-1 rounded dark:text-white">citta</span>)."
+                        </p>
+<p class="text-sm text-text-muted font-bold mt-2 uppercase tracking-wide dark:text-gray-500">— Primary Translation</p>
+</div>
+</div>
+</a>
+<!-- Result Card 2 -->
+<a class="group block bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-border-color shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300 dark:border-white/5 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                            Samadhi Pada 1.30
+                        </span>
+<span class="text-text-muted group-hover:text-primary transition-colors dark:text-gray-500">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</span>
+</div>
+<div>
+<p class="text-xl font-medium text-text-main leading-relaxed mb-2 font-display dark:text-gray-200">
+                            vyādhi-styāna-saṃśaya-pramāda-ālasya-avirati-bhrāntidarśana-alabdhabhūmikatva-anavasthitatvāni <span class="bg-primary/20 px-1 rounded mx-0.5 dark:text-white">citta</span>-vikṣepās te ’ntarāyāḥ
+                        </p>
+<p class="text-3xl text-gray-800 font-display mb-4 dark:text-white">
+                            व्याधिस्त्यानसंशयप्रमादालस्याविरतिभ्रान्तिदर्शनालब्धभूमिकत्वानवस्थितत्वानि चित्तविक्षेपास्तेऽन्तरायाः
+                        </p>
+</div>
+<div class="h-px bg-border-color w-full dark:bg-white/10"></div>
+<div class="space-y-2">
+<p class="text-lg text-text-muted leading-relaxed italic dark:text-gray-400">
+                            "Sickness, apathy, doubt, carelessness, laziness, hedonism, delusion, lack of progress, and instability are the distractions of the mind (<span class="bg-primary/20 px-1 rounded dark:text-white">citta</span>) which cause the obstacles."
+                        </p>
+<p class="text-sm text-text-muted font-bold mt-2 uppercase tracking-wide dark:text-gray-500">— Primary Translation</p>
+</div>
+</div>
+</a>
+<!-- Result Card 3 -->
+<a class="group block bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-border-color shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300 dark:border-white/5 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                            Samadhi Pada 1.33
+                        </span>
+<span class="text-text-muted group-hover:text-primary transition-colors dark:text-gray-500">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</span>
+</div>
+<div>
+<p class="text-xl font-medium text-text-main leading-relaxed mb-2 font-display dark:text-gray-200">
+                            maitrī-karuṇā-mudito-pekṣāṇāṁ-sukha-duḥkha-puṇyā-puṇya-viṣayāṇāṁ bhāvanātaś <span class="bg-primary/20 px-1 rounded mx-0.5 dark:text-white">citta</span>-prasādanam
+                        </p>
+<p class="text-3xl text-gray-800 font-display mb-4 dark:text-white">
+                            मैत्रीकरुणामुदितोपेक्षाणां सुखदुःखपुण्यापुण्यविषयाणां भावनातश्चित्तप्रसादनम्
+                        </p>
+</div>
+<div class="h-px bg-border-color w-full dark:bg-white/10"></div>
+<div class="space-y-2">
+<p class="text-lg text-text-muted leading-relaxed italic dark:text-gray-400">
+                            "By cultivating attitudes of friendliness toward the happy, compassion for the unhappy, delight in the virtuous, and disregard toward the wicked, the mind-stuff (<span class="bg-primary/20 px-1 rounded dark:text-white">citta</span>) retains its undisturbed calmness."
+                        </p>
+<p class="text-sm text-text-muted font-bold mt-2 uppercase tracking-wide dark:text-gray-500">— Primary Translation</p>
+</div>
+</div>
+</a>
+<!-- Result Card 4 -->
+<a class="group block bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-border-color shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300 dark:border-white/5 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                            Samadhi Pada 1.37
+                        </span>
+<span class="text-text-muted group-hover:text-primary transition-colors dark:text-gray-500">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</span>
+</div>
+<div>
+<p class="text-xl font-medium text-text-main leading-relaxed mb-2 font-display dark:text-gray-200">
+                            vītarāga-viṣayaṁ vā <span class="bg-primary/20 px-1 rounded mx-0.5 dark:text-white">cittam</span>
+</p>
+<p class="text-3xl text-gray-800 font-display mb-4 dark:text-white">
+                           वीतरागविषयं वा चित्तम्
+                        </p>
+</div>
+<div class="h-px bg-border-color w-full dark:bg-white/10"></div>
+<div class="space-y-2">
+<p class="text-lg text-text-muted leading-relaxed italic dark:text-gray-400">
+                            "Or that mind (<span class="bg-primary/20 px-1 rounded dark:text-white">citta</span>) which has given up all attachment to sense objects."
+                        </p>
+<p class="text-sm text-text-muted font-bold mt-2 uppercase tracking-wide dark:text-gray-500">— Primary Translation</p>
+</div>
+</div>
+</a>
+<!-- Pagination -->
+<div class="flex items-center justify-center gap-2 mt-8">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-border-color hover:bg-white hover:border-primary/50 text-text-muted hover:text-primary transition-colors dark:border-white/10 dark:hover:bg-white/5 dark:text-gray-400">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-text-main font-bold shadow-sm">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-border-color hover:bg-white hover:border-primary/50 text-text-muted hover:text-primary transition-colors dark:border-white/10 dark:hover:bg-white/5 dark:text-gray-400">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-border-color hover:bg-white hover:border-primary/50 text-text-muted hover:text-primary transition-colors dark:border-white/10 dark:hover:bg-white/5 dark:text-gray-400">3</button>
+<span class="text-text-muted px-2 dark:text-gray-500">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-border-color hover:bg-white hover:border-primary/50 text-text-muted hover:text-primary transition-colors dark:border-white/10 dark:hover:bg-white/5 dark:text-gray-400">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<footer class="border-t border-border-color bg-surface-light py-12 dark:bg-surface-dark dark:border-white/5 mt-10">
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 text-text-muted dark:text-gray-400">
+<span class="material-symbols-outlined text-primary">spa</span>
+<span class="text-sm">© 2023 Yoga Sutra Study Platform</span>
+</div>
+<div class="flex gap-8">
+<a class="text-sm text-text-muted hover:text-primary transition-colors dark:text-gray-400" href="#">Privacy Policy</a>
+<a class="text-sm text-text-muted hover:text-primary transition-colors dark:text-gray-400" href="#">Terms of Use</a>
+<a class="text-sm text-text-muted hover:text-primary transition-colors dark:text-gray-400" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

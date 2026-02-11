@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY52JZTHJG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VY52JZTHJG');
+    </script>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Yoga Sutra Viewer - Light of Yoga</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Maru+Buri:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b08d45", // Gold from landing page
+                        "primary-dark": "#8a6d32",
+                        "background-light": "#fdfbf7", // Parchment tone
+                        "background-dark": "#1a1814", // Ink black
+                        "parchment": "#f4f1ea",
+                        "parchment-dark": "#2c281f",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                        "kr-serif": ["Maru Buri", "Noto Serif KR", "serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-kr-serif {
+            font-family: 'Maru Buri', 'Noto Serif KR', serif;
+            font-weight: 500;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
+            overscroll-behavior: contain;
+            /* Prevent body scroll chaining */
+        }
+
+        /* Auto-resize textarea */
+        textarea {
+            field-sizing: content;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body
+    class="bg-[#fcfaf7] dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display transition-colors duration-500 overflow-hidden selection:bg-primary/20 selection:text-slate-900">
+
+    <!-- Password Gate Overlay -->
+    <div id="password-gate"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfbf7] dark:bg-[#1a1814] transition-opacity duration-700">
+        <div class="w-full max-w-md p-8 text-center space-y-8">
+            <div class="flex flex-col items-center gap-4">
+                <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary-dark">
+                    <span class="material-symbols-outlined text-4xl">lock</span>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-serif text-primary-dark font-bold italic tracking-tight">Access Restricted
+                    </h2>
+                    <p class="text-[10px] text-text-muted font-display tracking-[0.2em] uppercase mt-1">Light of Yoga
+                    </p>
+                </div>
+            </div>
+
+            <form id="password-form" class="space-y-5" onsubmit="checkPassword(event)">
+                <div class="relative group">
+                    <input type="password" id="app-password" placeholder="Enter Password"
+                        class="w-full bg-white border border-primary/20 rounded-xl px-4 py-4 text-center text-xl tracking-[0.5em] focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all placeholder:tracking-normal placeholder:text-sm placeholder:text-text-muted/50"
+                        autofocus autocomplete="off">
+                    <div id="password-error"
+                        class="hidden absolute -bottom-6 left-0 right-0 text-[10px] text-red-500 font-bold uppercase tracking-wider">
+                        Incorrect password.
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-primary transition-all active:scale-[0.98] font-display flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
+                    Enter Gateway
+                    <span class="material-symbols-outlined text-xl">vaping_rooms</span>
+                </button>
+            </form>
+
+            <div class="pt-2">
+                <p class="text-xs text-text-muted/70 font-kr-serif">
+                    문의 : <a href="mailto:roasea@naver.com"
+                        class="text-primary-dark hover:underline">roasea@naver.com</a>
+                </p>
+            </div>
+
+            <p class="text-[9px] text-text-muted/40 uppercase tracking-[0.2em] font-display">
+                Dedicated to the timeless wisdom of Patanjali
+            </p>
+        </div>
+    </div>
+    <script>
+            (function () {
+                try {
+                    var p = '0228';
+                    var l = localStorage.getItem('yoga_gate_auth');
+                    var c = document.cookie.split('; ').find(function (r) { return r.trim().startsWith('yoga_gate_auth=') });
+                    var cv = c ? c.split('=')[1] : null;
+                    if (l === p || cv === p) {
+                        var g = document.getElementById('password-gate');
+                        if (g) { g.style.display = 'none'; g.classList.add('hidden'); }
+                        document.body.classList.remove('overflow-hidden');
+                        var ctt = document.getElementById('main-content') || document.getElementById('landing-page');
+                        if (ctt) { ctt.classList.remove('invisible'); ctt.classList.add('opacity-100'); }
+                    }
+                } catch (e) { }
+            })();
+    </script>
+
+    <div id="main-content" class="transition-all duration-700 flex flex-col h-screen">
+        <!-- Top Navigation -->
+        <header
+            class="h-16 border-b border-primary/20 bg-background-light dark:bg-background-dark flex items-center justify-between px-4 md:px-6 shrink-0 z-30">
+            <div class="flex items-center gap-2 md:gap-4">
+                <!-- Mobile Menu Toggle -->
+                <button class="lg:hidden p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                    onclick="toggleSidebar()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                    title="Back to Home">
+                    <span class="material-symbols-outlined text-primary text-xl">spa</span>
+                    <h1
+                        class="text-base md:text-lg font-bold tracking-tight text-slate-900 dark:text-white font-serif whitespace-nowrap">
+                        Yoga Sutras</h1>
+                </a>
+            </div>
+            <div class="flex items-center gap-3 md:gap-6">
+                <!-- Quick Navigation - Now visible on small screens with min-width -->
+                <div
+                    class="flex items-center gap-1.5 md:gap-3 bg-parchment dark:bg-slate-800 rounded-lg py-1 px-2 md:px-3 border border-primary/10">
+                    <div class="relative">
+                        <select id="chapter-select-header"
+                            class="bg-transparent border-none text-[12px] md:text-sm p-0 pr-4 md:pr-6 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none">
+                            <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                Ch I
+                            </option>
+                            <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                Ch
+                                II</option>
+                            <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                Ch
+                                III</option>
+                            <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                                Ch
+                                IV</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
+                    </div>
+                    <div class="w-px h-3 bg-primary/20"></div>
+                    <div class="relative">
+                        <select id="sutra-select-header"
+                            class="bg-transparent border-none text-[12px] md:text-sm p-0 pr-4 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif w-12 md:w-16 appearance-none font-medium outline-none">
+                            <!-- Populated by JS -->
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button
+                        class="xl:hidden p-2 text-slate-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        onclick="toggleNotes()" title="User Notes">
+                        <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                    </button>
+                    <button
+                        class="p-2 text-slate-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        onclick="toggleTheme()" title="Toggle Theme">
+                        <span class="material-symbols-outlined text-[20px]">dark_mode</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="flex flex-1 overflow-hidden relative">
+            <!-- Left Sidebar: Navigation Drawer -->
+            <aside id="left-sidebar"
+                class="fixed inset-y-0 left-0 w-80 bg-background-light dark:bg-background-dark border-r border-primary/20 z-40 transition-transform -translate-x-full lg:relative lg:translate-x-0 lg:flex lg:flex-col shrink-0">
+                <div class="p-4 border-b border-primary/10 flex items-center justify-between">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Chapters (Padas)</h2>
+                    <button class="lg:hidden p-1 text-slate-400 hover:text-primary transition-colors"
+                        onclick="closeAllSidebars()">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
+                <div class="p-4 border-b border-primary/10">
+                    <div class="space-y-1" id="chapter-list">
+                        <!-- Chapter buttons injected by JS -->
+                    </div>
+                </div>
+                <!-- Sutra List for Active Chapter -->
+                <div class="flex-1 overflow-y-auto p-2 no-scrollbar" id="sidebar-sutra-list">
+                    <!-- Sutra links injected by JS -->
+                </div>
+            </aside>
+
+            <!-- Center Content: The Sutra -->
+            <main class="flex-1 flex flex-col h-full overflow-hidden relative" id="main-content">
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scroll-smooth" id="sutra-detail-view">
+                    <!-- Detailed Sutra Content injected by JS -->
+                    <div class="flex items-center justify-center h-full text-slate-400 italic">
+                        Select a Sutra to begin...
+                    </div>
+                </div>
+
+                <!-- Overlay for mobile sidebars -->
+                <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden transition-opacity opacity-0"
+                    onclick="closeAllSidebars()"></div>
+
+                <!-- Bottom Navigation for Sutras (Mobile/Desktop) -->
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-lg border border-primary/20 z-10 transition-transform duration-300"
+                    id="bottom-nav">
+                    <button
+                        class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors"
+                        id="prev-sutra-btn">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <span class="text-sm font-medium text-slate-900 dark:text-white"
+                        id="current-sutra-indicator">--</span>
+                    <button
+                        class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors"
+                        id="next-sutra-btn">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Right Sidebar: Notes Drawer -->
+            <aside id="right-sidebar"
+                class="fixed inset-y-0 right-0 w-80 bg-parchment dark:bg-parchment-dark border-l border-primary/20 z-40 transition-transform translate-x-full xl:relative xl:translate-x-0 xl:flex xl:flex-col shrink-0">
+                <div class="p-4 border-b border-primary/10 flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-slate-800 dark:text-slate-200">
+                        <span class="material-symbols-outlined text-primary">edit_note</span>
+                        <h2 class="text-sm font-bold">Reflections</h2>
+                    </div>
+                    <button class="xl:hidden p-1 text-slate-400 hover:text-primary transition-colors"
+                        onclick="closeAllSidebars()">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
+                <div class="flex-1 p-4 overflow-y-auto">
+                    <div class="text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">Notes on Sutra <span
+                            id="note-sutra-id">...</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-primary/20 p-1 mb-4">
+                        <textarea
+                            class="w-full h-64 resize-none border-none focus:ring-0 text-sm text-slate-700 dark:text-slate-300 bg-transparent p-2 leading-relaxed font-kr-serif"
+                            placeholder="이 수트라에 대한 나만의 단상이나 해석을 기록해보세요..." id="user-note-area"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <button
+                            class="bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-slate-600 px-3 py-2 rounded-lg text-sm font-medium shadow-sm transition-all flex items-center gap-2"
+                            onclick="exportNotes()" title="Download Notes as Text File">
+                            <span class="material-symbols-outlined text-[18px]">download</span>
+                            Export
+                        </button>
+                        <button
+                            class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-all flex items-center gap-2"
+                            onclick="saveNote()">
+                            <span class="material-symbols-outlined text-[18px]">save</span>
+                            Save Note
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div> <!-- Close main-content -->
+
+        <!-- Data & Scripts -->
+        <script src="data.js" defer></script>
+        <script src="script.js" defer></script>
+</body>
+
+</html>
