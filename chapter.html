@@ -21,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Maru+Buri:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Maru+Buri:wght@300;400;600&display=block"
         rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
 
@@ -88,7 +88,16 @@
 </head>
 
 <body
-    class="bg-[#fcfaf7] dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display transition-colors duration-500 overflow-hidden selection:bg-primary/20 selection:text-slate-900">
+    class="bg-[#fcfaf7] dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display transition-opacity duration-700 overflow-hidden selection:bg-primary/20 selection:text-slate-900 opacity-0"
+    style="opacity: 0;">
+    <script>
+        document.fonts.ready.then(function () {
+            requestAnimationFrame(function () {
+                document.body.style.opacity = '1';
+                document.body.classList.remove('opacity-0');
+            });
+        });
+    </script>
 
     <!-- Password Gate Overlay -->
     <div id="password-gate"
@@ -136,21 +145,21 @@
         </div>
     </div>
     <script>
-            (function () {
-                try {
-                    var p = '0228';
-                    var l = localStorage.getItem('yoga_gate_auth');
-                    var c = document.cookie.split('; ').find(function (r) { return r.trim().startsWith('yoga_gate_auth=') });
-                    var cv = c ? c.split('=')[1] : null;
-                    if (l === p || cv === p) {
-                        var g = document.getElementById('password-gate');
-                        if (g) { g.style.display = 'none'; g.classList.add('hidden'); }
-                        document.body.classList.remove('overflow-hidden');
-                        var ctt = document.getElementById('main-content') || document.getElementById('landing-page');
-                        if (ctt) { ctt.classList.remove('invisible'); ctt.classList.add('opacity-100'); }
-                    }
-                } catch (e) { }
-            })();
+        (function () {
+            try {
+                var p = '0228';
+                var l = localStorage.getItem('yoga_gate_auth');
+                var c = document.cookie.split('; ').find(function (r) { return r.trim().startsWith('yoga_gate_auth=') });
+                var cv = c ? c.split('=')[1] : null;
+                if (l === p || cv === p) {
+                    var g = document.getElementById('password-gate');
+                    if (g) { g.style.display = 'none'; g.classList.add('hidden'); }
+                    document.body.classList.remove('overflow-hidden');
+                    var ctt = document.getElementById('main-content') || document.getElementById('landing-page');
+                    if (ctt) { ctt.classList.remove('invisible'); ctt.classList.add('opacity-100'); }
+                }
+            } catch (e) { }
+        })();
     </script>
 
     <div id="main-content" class="transition-all duration-700 flex flex-col h-screen">
