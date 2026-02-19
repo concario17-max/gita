@@ -102,7 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
-    // 1. Common Setup (Quick Jump works on all pages)
+    // 1. Common Setup
+    populateChapterSelects();
+    renderLandingGrid();
     setupQuickJump();
 
     // 2. Chapter Page Logic (only if elements exist)
@@ -137,11 +139,57 @@ function initializeApp() {
 
 // Sutra Counts per Chapter
 const sutraCounts = {
-    1: 51,
-    2: 55,
-    3: 56,
-    4: 34
+    1: 47, 2: 72, 3: 43, 4: 42, 5: 29, 6: 47,
+    7: 30, 8: 28, 9: 34, 10: 42, 11: 55, 12: 20,
+    13: 35, 14: 27, 15: 20, 16: 24, 17: 28, 18: 78
 };
+
+const chapters = [
+    { id: '1', name: '1. Arjuna Viṣhād Yoga', count: 47, icon: 'sentiment_dissatisfied' },
+    { id: '2', name: '2. Sānkhya Yoga', count: 72, icon: 'self_improvement' },
+    { id: '3', name: '3. Karma Yoga', count: 43, icon: 'work' },
+    { id: '4', name: '4. Jñāna Karma Sanyāsa Yoga', count: 42, icon: 'school' },
+    { id: '5', name: '5. Karma Sanyāsa Yoga', count: 29, icon: 'psychology' },
+    { id: '6', name: '6. Dhyān Yoga', count: 47, icon: 'spa' },
+    { id: '7', name: '7. Jñāna Vijñāna Yoga', count: 30, icon: 'science' },
+    { id: '8', name: '8. Akṣhara Brahma Yoga', count: 28, icon: 'all_inclusive' },
+    { id: '9', name: '9. Rāja Vidyā Rāja Guhya Yoga', count: 34, icon: 'visibility' },
+    { id: '10', name: '10. Vibhūti Yoga', count: 42, icon: 'auto_awesome' },
+    { id: '11', name: '11. Viśhwarūp Darśhan Yoga', count: 55, icon: 'stars' },
+    { id: '12', name: '12. Bhakti Yoga', count: 20, icon: 'favorite' },
+    { id: '13', name: '13. Kṣhetra Kṣhetrajña Vibhāga Yoga', count: 35, icon: 'landscape' },
+    { id: '14', name: '14. Guṇa Traya Vibhāga Yoga', count: 27, icon: 'tune' },
+    { id: '15', name: '15. Puruṣhottama Yoga', count: 20, icon: 'emoji_people' },
+    { id: '16', name: '16. Daivāsura Sampad Vibhāga Yoga', count: 24, icon: 'balance' },
+    { id: '17', name: '17. Śhraddhā Traya Vibhāga Yoga', count: 28, icon: 'volunteer_activism' },
+    { id: '18', name: '18. Mokṣha Sanyāsa Yoga', count: 78, icon: 'no_meeting_room' }
+];
+
+function populateChapterSelects() {
+    const selects = ['chapter-select-landing', 'chapter-select-header', 'chapter-select-mobile'];
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const currentVal = el.value;
+        el.innerHTML = '';
+        chapters.forEach(chap => {
+            const opt = document.createElement('option');
+            opt.value = chap.id;
+            // Name already contains number, so just use it.
+            // Shortening for mobile/selects might still be good?
+            // Let's use the full name for clarity as requested.
+            opt.textContent = chap.name;
+            opt.className = "bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200";
+            el.appendChild(opt);
+        });
+        // Preserve selection if valid, otherwise default to currentChapterId or 1
+        if (currentVal && chapters.some(c => c.id === currentVal)) {
+            el.value = currentVal;
+        } else if (currentChapterId) {
+            el.value = currentChapterId;
+        }
+    });
+}
 
 function setupQuickJump() {
     // Initialize quick jump for both landing and header
@@ -214,27 +262,23 @@ function renderSidebar(chapterId) {
     sutraList.innerHTML = '';
 
     // Render Chapter Buttons (Padas)
-    const chapters = [
-        { id: '1', name: 'Samadhi Pada', count: 51, icon: 'spa' },
-        { id: '2', name: 'Sadhana Pada', count: 55, icon: 'self_improvement' },
-        { id: '3', name: 'Vibhuti Pada', count: 56, icon: 'wb_twilight' },
-        { id: '4', name: 'Kaivalya Pada', count: 34, icon: 'all_inclusive' }
-    ];
+    // chapters array is now global
 
     chapters.forEach(chap => {
         const isActive = chap.id === chapterId;
         const btn = document.createElement('button');
-        btn.className = `w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors mb-1 ${isActive
+        // Compact: py-1.5, smaller text if needed.
+        btn.className = `w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium transition-colors mb-0.5 ${isActive
             ? 'bg-primary/10 text-primary'
             : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`;
         btn.onclick = () => window.location.href = `chapter.html?id=${chap.id}`;
 
         btn.innerHTML = `
             <span class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-[18px] ${isActive ? '' : 'text-slate-400'}">${chap.icon}</span>
-                ${chap.name}
+                <span class="material-symbols-outlined text-[16px] ${isActive ? '' : 'text-slate-400'}">${chap.icon}</span>
+                <span class="truncate max-w-[140px] text-left">${chap.name}</span>
             </span>
-            <span class="text-xs ${isActive ? 'bg-primary/20 text-primary font-bold' : 'text-slate-400'} px-1.5 py-0.5 rounded">${chap.count}</span>
+            <span class="text-[10px] ${isActive ? 'bg-primary/20 text-primary font-bold' : 'text-slate-400'} px-1.5 py-0.5 rounded">${chap.count}</span>
         `;
         chapterList.appendChild(btn);
     });
@@ -300,12 +344,7 @@ function loadSutra(id) {
                 <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight font-kr-serif break-keep break-words">
                     ${sutra.sanskrit || ''}
                 </h1>
-                <h2 class="text-xl md:text-2xl font-light text-slate-600 dark:text-slate-400 italic mb-8 font-serif break-keep break-words">
-                    ${sutra.pronunciation || ''}
-                </h2>
-                <div class="text-lg text-slate-500 dark:text-slate-500 mb-8 font-kr-serif break-keep break-words leading-relaxed">
-                    ${formatPronunciationKr(sutra.pronunciation_kr || '')}
-                </div>
+                ${renderPronunciation(sutra)}
 
                 <!-- Audio Player -->
                 <div class="flex flex-col items-center mb-10 w-full max-w-md mx-auto">
@@ -324,7 +363,7 @@ function loadSutra(id) {
 
                         <span id="duration-${sutra.id}" class="text-xs font-mono text-slate-500 w-10">0:00</span>
                         
-                        <audio id="audio-${sutra.id}" src="mp3/${sutra.id.replace('.', '-')}.mp3"></audio>
+                        <audio id="audio-${sutra.id}" src="${sutra.audio}"></audio>
                     </div>
                 </div>
 
@@ -358,21 +397,35 @@ function loadSutra(id) {
 // Helper to remove diacritics and common Sandhi endings for easier matching
 function formatPronunciationKr(text) {
     if (!text) return '';
-    // Split by '｜' and wrap each chunk in an inline-block span to prevent internal breaking
+    // Split by '|' or '｜' and wrap each chunk in an inline-block span to prevent internal breaking
     // We include the separator in the chunk so it stays with the preceding word, or manage it separately.
-    // User wants "break unit by ｜".
-    return text.split('｜').map(chunk => {
+    return text.split(/[|｜]/).map((chunk, index, array) => {
         // Trim and only wrap if not empty
         const trimmed = chunk.trim();
         if (!trimmed) return '';
-        return `<span class="inline-block whitespace-nowrap">${trimmed}</span>`;
-    }).join('<span class="mx-1 opacity-50">｜</span>'); // Re-insert separator with visual styling if needed, or just space.
-    // Actually, user said "break unit by ｜". If the original text has ｜, we should probably keep it or use it as the split point.
-    // Let's assume the input string has ｜.
-    // Example: "아타｜요가｜아누사사남"
-    // Result: <span>아타</span> <span>｜</span> <span>요가</span> ...
-    // Better: keep ｜ with the word? "아타 ｜" -> no, usually separator is central.
-    // Let's try: <span>chunk</span> <span class="mx-1">｜</span> <span>chunk</span>
+        // Add separator if not the last chunk. 
+        // User wants NO space after pipe. "word| nextword" -> "word |nextword".
+        // Use ml-1 for space BEFORE pipe, so it separates from previous word, but sticks to next word.
+        const separator = index < array.length - 1 ? '<span class="ml-1 opacity-50">|</span>' : '';
+        return `<span class="inline-block whitespace-nowrap">${trimmed}</span>${separator}`;
+    }).join('');
+}
+
+function renderPronunciation(sutra) {
+    const iast = sutra.pronunciation || '';
+    const hangul = sutra.pronunciation_kr || '';
+
+    if (!iast && !hangul) return '';
+
+    // Reverting to Stacked Display as requested
+    return `
+        <h2 class="text-xl md:text-2xl font-light text-slate-600 dark:text-slate-400 italic mb-8 font-serif break-keep break-words">
+            ${iast}
+        </h2>
+        <div class="text-lg text-slate-500 dark:text-slate-500 mb-8 font-kr-serif break-keep break-words leading-relaxed">
+            ${formatPronunciationKr(hangul)}
+        </div>
+    `;
 }
 
 function normalizeText(text) {
@@ -479,46 +532,11 @@ function renderTranslations(sutra) {
     const translationKeys = getTranslationKeys(sutra);
     let html = '';
 
-    // 1. Alice Bailey (2.english)
-    if (translationKeys.includes('2.english')) {
-        html += renderTranslationCard(sutra, ['2.english'], "Alice A. Bailey", "The Light of the Soul", "auto_stories", "bg-purple-50 text-purple-600");
-    }
-
-    // 2. Simsang (3.korean-1)
-    if (translationKeys.includes('3.korean-1')) {
-        html += renderTranslationCard(sutra, ['3.korean-1'], "심상학회", "직역 및 해설", "diversity_3", "bg-green-50 text-green-600");
-    }
-
-    // 3. Bae (Yi)
-    const baeKeys = translationKeys.filter(k => k.includes('bae')).sort();
-    if (baeKeys.length > 0) {
-        html += renderTranslationCard(sutra, baeKeys, "배철현", "배철현의 요가수트라 강독", "person_search", "bg-orange-50 text-orange-600");
-    }
-
-    // 4. Oxford (Nicholas Sutton)
-    const oxfordKeys = translationKeys.filter(k => k.includes('ox'));
-    if (oxfordKeys.length > 0) {
-        // Sort English (ox-en) before Korean (ox)
-        oxfordKeys.sort((a, b) => {
-            if (a.includes('ox-en') && !b.includes('ox-en')) return -1;
-            if (!a.includes('ox-en') && b.includes('ox-en')) return 1;
-            return a.localeCompare(b);
-        });
-        html += renderTranslationCard(sutra, oxfordKeys, "Nicholas Sutton", "Oxford Centre for Hindu Studies", "school", "bg-blue-50 text-blue-600");
-    }
-
-    // Others
-    const otherKeys = translationKeys.filter(k =>
-        !k.includes('ox') &&
-        !k.includes('bae') &&
-        !k.includes('2.english') &&
-        !k.includes('3.korean-1')
-    );
-
-    // Group "7.dan" -> Dan
-    if (otherKeys.includes('7.dan')) {
-        html += renderTranslationCard(sutra, ['7.dan'], "단요가", "요가수트라 해설", "edit", "bg-slate-50 text-slate-600");
-    }
+    // Display generic translations if available
+    const keys = translationKeys.filter(k => k !== 'audio'); // Exclude audio if it leaked
+    keys.forEach(key => {
+        html += renderTranslationCard(sutra, [key], key, "Translation", "translate", "bg-slate-50 text-slate-600");
+    });
 
     return html;
 }
@@ -562,7 +580,7 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
 }
 
 function getTranslationKeys(sutra) {
-    const fixedKeys = ['id', 'sanskrit', 'pronunciation', 'pronunciation_kr', 'word_meanings'];
+    const fixedKeys = ['id', 'sanskrit', 'pronunciation', 'pronunciation_kr', 'word_meanings', 'chapter', 'verse', 'grouped_verses', 'audio'];
     return Object.keys(sutra).filter(key => !fixedKeys.includes(key) && key !== 'pada').sort();
 }
 
@@ -774,6 +792,62 @@ window.closeCompendium = () => {
         modal.classList.add('hidden');
     }, 500);
 };
+
+function renderLandingGrid() {
+    const grid = document.getElementById('landing-chapter-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    chapters.forEach(chap => {
+        const a = document.createElement('a');
+        // Grid styling: Use border-r and border-b for grid effect. Tailwind grid-cols will handle layout.
+        // We'll add borders to all, and maybe clean up edges with CSS or just let them be.
+        a.className = "group relative p-6 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer border-r border-b border-primary/10";
+        a.href = `chapter.html?id=${chap.id}`;
+        a.onclick = (e) => navigateToChapter(e, `chapter.html?id=${chap.id}`);
+        // Subtitle (English meaning)
+        const sub = getChapterSubtitle(chap.id);
+
+        a.innerHTML = `
+            <div class="mb-3 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+                <span class="material-symbols-outlined text-3xl text-primary">${chap.icon}</span>
+            </div>
+            <div class="space-y-1">
+                <span class="text-[10px] font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter ${chap.id}</span>
+                <h2 class="text-lg font-display text-ink group-hover:text-primary-dark transition-colors font-bold">${chap.name.replace(/^\d+\.\s*/, '')}</h2>
+                 <p class="text-xs text-text-muted font-serif italic leading-relaxed break-keep break-words mt-1 opacity-80">
+                    ${sub}
+                </p>
+                <div class="mt-4 w-6 h-px bg-primary/20 group-hover:w-12 transition-all duration-500 mx-auto"></div>
+            </div>
+        `;
+        grid.appendChild(a);
+    });
+}
+
+function getChapterSubtitle(id) {
+    const subs = {
+        '1': 'Lamenting the Consequences of War',
+        '2': 'The Eternal Reality of the Soul\'s Immortality',
+        '3': 'The Eternal Duties of Human Beings',
+        '4': 'Approaching the Ultimate Truth',
+        '5': 'Action and Renunciation',
+        '6': 'The Science of Self Realization',
+        '7': 'Knowledge of the Ultimate Truth',
+        '8': 'Attainment of Salvation',
+        '9': 'The Most Confidential Knowledge',
+        '10': 'The Opulence of the Absolute',
+        '11': 'Vision of the Universal Form',
+        '12': 'The Path of Devotion',
+        '13': 'Nature, the Enjoyer and Consciousness',
+        '14': 'The Three Modes of Material Nature',
+        '15': 'The Yoga of the Supreme Person',
+        '16': 'The Divine and Demoniac Natures',
+        '17': 'The Divisions of Faith',
+        '18': 'Conclusion-The Perfection of Renunciation'
+    };
+    return subs[id] || '';
+}
 
 // Lexicon Modal Logic
 // Lexicon Modal Logic

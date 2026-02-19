@@ -13,7 +13,7 @@
     </script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Yoga Sutra Viewer - Light of Yoga</title>
+    <title>Bhagavad Gita Viewer - The Song of God</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet" />
@@ -220,7 +220,7 @@
                     <span class="material-symbols-outlined text-primary text-xl">spa</span>
                     <h1
                         class="text-base md:text-lg font-bold tracking-tight text-slate-900 dark:text-white font-serif whitespace-nowrap">
-                        Yoga Sutras</h1>
+                        Bhagavad Gita</h1>
                 </a>
             </div>
             <div class="flex items-center gap-1.5 md:gap-6">
@@ -230,15 +230,7 @@
                     <div class="relative">
                         <select id="chapter-select-header"
                             class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 md:pr-6 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-8 md:w-auto">
-                            <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                I
-                            </option>
-                            <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                II</option>
-                            <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                III</option>
-                            <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                IV</option>
+                            <!-- Populated by JS -->
                         </select>
                         <span
                             class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[8px] md:text-[10px]">arrow_drop_down</span>
@@ -278,10 +270,7 @@
                 <div class="relative flex-1 text-center">
                     <select id="chapter-select-mobile"
                         class="bg-transparent border-none text-xs p-0 pr-4 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-full text-center">
-                        <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 1</option>
-                        <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 2</option>
-                        <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 3</option>
-                        <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 4</option>
+                        <!-- Populated by JS -->
                     </select>
                     <span
                         class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
@@ -303,14 +292,14 @@
             <aside id="left-sidebar"
                 class="fixed inset-y-0 left-0 w-80 bg-background-light dark:bg-background-dark border-r border-primary/20 z-40 transition-transform -translate-x-full lg:relative lg:translate-x-0 flex flex-col shrink-0">
                 <div class="p-4 border-b border-primary/10 flex items-center justify-between">
-                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Chapters (Padas)</h2>
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Chapters (18 Yogas)</h2>
                     <button class="lg:hidden p-1 text-slate-400 hover:text-primary transition-colors"
                         onclick="closeAllSidebars()">
                         <span class="material-symbols-outlined text-[20px]">close</span>
                     </button>
                 </div>
-                <div class="p-4 border-b border-primary/10">
-                    <div class="space-y-1" id="chapter-list">
+                <div class="p-2 border-b border-primary/10">
+                    <div class="space-y-0.5 max-h-[40vh] overflow-y-auto pr-1 no-scrollbar" id="chapter-list">
                         <!-- Chapter buttons injected by JS -->
                     </div>
                 </div>

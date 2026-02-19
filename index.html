@@ -13,7 +13,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yoga Sutras - The Light of Yoga</title>
+    <title>Bhagavad Gita - The Song of God</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,8 +183,8 @@
                 <div class="text-center">
                     <h1
                         class="text-3xl md:text-4xl font-display font-medium tracking-[0.15em] text-slate-900 text-[#1a1814] uppercase drop-shadow-md">
-                        Patañjali</h1>
-                    <p class="text-sm font-serif italic text-primary-dark tracking-widest mt-1">The Yoga Sūtras</p>
+                        Bhagavad Gita</h1>
+                    <p class="text-sm font-serif italic text-primary-dark tracking-widest mt-1">The Song of God</p>
                 </div>
             </div>
             <nav class="flex flex-wrap items-center justify-center gap-3 md:gap-8 mt-4 px-4 w-full">
@@ -227,10 +227,7 @@
                                     class="block text-[10px] font-display tracking-widest text-primary/60 mb-0.5 uppercase">Chapter</label>
                                 <select id="chapter-select-landing"
                                     class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary-dark font-serif text-lg cursor-pointer font-bold appearance-none outline-none">
-                                    <option value="1" class="bg-[#fdfbf7] text-text-main">I. Samādhi</option>
-                                    <option value="2" class="bg-[#fdfbf7] text-text-main">II. Sādhana</option>
-                                    <option value="3" class="bg-[#fdfbf7] text-text-main">III. Vibhūti</option>
-                                    <option value="4" class="bg-[#fdfbf7] text-text-main">IV. Kaivalya</option>
+                                    <!-- Populated by JS -->
                                 </select>
                             </div>
                             <div class="w-px h-8 bg-primary/20"></div>
@@ -249,76 +246,14 @@
                 </div>
             </div>
 
-            <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gradient-to-b from-transparent via-primary/20 to-transparent w-full max-w-3xl border-t border-b border-primary/20">
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer border-r border-primary/10 last:border-r-0 md:border-r"
-                    href="chapter.html?id=1" onclick="navigateToChapter(event, 'chapter.html?id=1')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">psychology</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
-                            I</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
-                            Samādhi Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
-                            On the absorption of consciousness.
-                        </p>
-                    </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
-                </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer"
-                    href="chapter.html?id=2" onclick="navigateToChapter(event, 'chapter.html?id=2')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">self_improvement</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
-                            II</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
-                            Sādhana Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
-                            On the practice of discipline.
-                        </p>
-                    </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
-                </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer border-r border-primary/10 last:border-r-0 md:border-r md:border-t border-t"
-                    href="chapter.html?id=3" onclick="navigateToChapter(event, 'chapter.html?id=3')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">wb_twilight</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
-                            III</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
-                            Vibhūti Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
-                            On supernatural powers &amp; accomplishments.
-                        </p>
-                    </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
-                </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer md:border-t border-t"
-                    href="chapter.html?id=4" onclick="navigateToChapter(event, 'chapter.html?id=4')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">all_inclusive</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
-                            IV</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
-                            Kaivalya Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
-                            On absolute freedom and liberation.
-                        </p>
-                    </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
-                </a>
+            <div id="landing-chapter-grid"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gradient-to-b from-transparent via-primary/20 to-transparent w-full max-w-5xl border-t border-b border-primary/20">
+                <!-- Populated by JS -->
             </div>
             <div class="mt-16 text-center">
                 <p class="text-sm font-serif text-text-muted/60 italic max-w-md mx-auto">
-                    "Yoga is the cessation of the fluctuations of the mind." — Sutra 1.2
+                    "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your
+                    actions." — Bhagavad Gita 2.47
                 </p>
             </div>
         </main>
