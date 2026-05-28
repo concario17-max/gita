@@ -207,7 +207,7 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
                         />
                     </div>
                 ) : learningComicImageUrl ? (
-                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-2 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
+                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-1 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
                         <img
                             src={learningComicImageUrl}
                             alt={`Learning comic ${chapterNum}.${verseNum}`}
@@ -330,7 +330,7 @@ const VerseView = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
+                className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-start"
             >
                 <div className="mx-auto flex w-full flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:px-8">
                     {!isCommentaryMode ? (

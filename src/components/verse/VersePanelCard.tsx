@@ -14,7 +14,7 @@ export const VersePanelCard = ({
     children,
     navigationControls,
     trailingAction,
-    shellClassName = 'overflow-hidden rounded-[2rem] border border-gold-border/18 bg-[#fffdf8] shadow-[inset_0_1px_0_rgba(255,255,255,0.58),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:border-dark-border/50 dark:bg-[#14110e] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_40px_-34px_rgba(0,0,0,0.48)]',
+    shellClassName = 'overflow-hidden rounded-[2rem] bg-[#fffdf8] shadow-[inset_0_1px_0_rgba(255,255,255,0.58),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:bg-[#14110e] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_40px_-34px_rgba(0,0,0,0.48)]',
     contentClassName = 'bg-[#f3e8d2] px-3 py-4 sm:px-4 sm:py-5 lg:px-6 lg:py-6 dark:bg-[#1d1813]',
 }: VersePanelCardProps) => (
     <section className={shellClassName}>
