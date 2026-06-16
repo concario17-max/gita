@@ -199,19 +199,21 @@ Goal: synchronize the live app with the newly copied data source before any impl
   - [ ] `npm.cmd run build` 프로덕션 빌드 성공 확인
   - [ ] `npm.cmd run qa:browser` 스모크 QA 테스트 통과 확인 (테두리 제거 상태에서도 에러 없이 렌더 검증 완료)
 
-## 14. Bhagavad Gita Chapter 5-18 Commentary Dataset Import (5~18장 해설 데이터셋 임포트)
+## 14. Legacy Commentary Artifacts Clean Up (요가 수트라 레거시 찌꺼기 파일 정리)
 
 ### 14.1 문제점 분석
-- `src/data` 폴더 내부에는 오직 1~4장까지의 해설 파일(`chapter1Commentary.ts` ~ `chapter4Commentary.ts`)만 신설되어 존재함
-- 프로젝트 루트 경로에는 `바가바드 기타_5장 해설.odt`부터 `바가바드 기타_18장 해설.odt`까지의 원본 텍스트 데이터가 방치되어 있어 5장 이후의 해설 기능이 사실상 불능 상태임
+- `src/data/` 내부에 방치된 `chapter1Commentary.ts` ~ `chapter4Commentary.ts` 파일들은 4장 구성인 요가 수트라 시절의 잔재이며 현재 바가바드 기타 뷰어에서는 임포트조차 되지 않는 순수 찌꺼기 파일임
+- 바가바드 기타의 1~18장 모든 해설은 이미 `public/gita.json` 내부에 `commentary_en` 필드로 통합 서빙되고 있어 5장 이후 해설도 런타임에 아무 문제 없이 잘 출력됨
+- 루트에 흩어져 있는 `.odt` 해설 원본 문서들과 `src/data/` 하위 모듈들은 리포지토리 용량과 복잡도만 늘리는 불필요한 노이즈이므로 제거 대상임
 
 ### 14.2 세분화된 TODO 리스트
-- [ ] 5장부터 18장까지의 해설 데이터 이식
-  - [ ] 각 ODT 파일 구조 검사 및 텍스트 데이터 정제 추출
-  - [ ] `src/data/` 하위에 `chapter5Commentary.ts`부터 `chapter18Commentary.ts`까지 각각 단일 책임 모듈로 신설
-  - [ ] 각 파일 내 텍스트에 한글 주석 적용 및 800라인 규칙 준수
-- [ ] `CommentarySidebar.tsx` 매핑 연동
-  - [ ] 신설된 5~18장 해설 데이터 객체들을 임포트하고 챕터 번호에 맞춰 동적 렌더링 맵핑 추가
+- [ ] 레거시 요가 수트라 해설 파일 삭제
+  - [ ] `src/data/chapter1Commentary.ts` 삭제
+  - [ ] `src/data/chapter2Commentary.ts` 삭제
+  - [ ] `src/data/chapter3Commentary.ts` 삭제
+  - [ ] `src/data/chapter4Commentary.ts` 삭제
+- [ ] 루트의 백업용 `.odt` 문서 정리 여부 확정 및 정리
+
 
 ## 15. Stale Documentation & Dead Code Clean Up (문서 및 미사용 레거시 정리)
 
