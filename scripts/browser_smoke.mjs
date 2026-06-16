@@ -281,6 +281,13 @@ async function runMobileFlow(browser, logs, errors) {
     await waitForHomeSelects(mobile.page);
     await goFromHomeToVerse(mobile.page, '3', '9');
     await waitForHomeSelects(mobile.page);
+
+    // 좁은 뷰포트(모바일)에서 사이드바 비활성화 및 미니 가이드 배너 노출 검증
+    const sidebar = mobile.page.locator('aside:visible, [role="complementary"]:visible, [data-sidebar]:visible, [data-drawer]:visible');
+    const miniGuide = mobile.page.locator('section').filter({ hasText: 'Verse Guide' }).first();
+    await expectHidden(sidebar, '모바일 뷰포트에서 사이드바가 숨겨져 있어야 함.');
+    await expectVisible(miniGuide, '모바일 해설 모드에서 미니 가이드 배너가 노출되어야 함.');
+
     await verifyVerseModeToggling(mobile.page);
 
     // 번역가 라벨 검증을 위해 body(심화) 모드로 전환

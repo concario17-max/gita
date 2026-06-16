@@ -23,7 +23,7 @@ Yoga is a React-based reading app for the Yoga Sutras. It brings together Sanskr
 
 ## Runtime data flow
 
-The app reads from `public/data.json`.
+The app reads from `public/gita.json`.
 
 - Loader: `src/utils/dataFetcher.ts`
 - Shared provider: `src/context/YogaDataContext.tsx`
@@ -74,7 +74,7 @@ Source texts live in `data-source/`. The main generation script is:
 It parses the source `.txt` files and writes:
 
 - `data.js`
-- `public/data.json`
+- `public/gita.json`
 
 More details are documented in `scripts/README.md`.
 
@@ -87,7 +87,7 @@ This is a static build.
 
 Before deployment:
 
-- confirm `public/data.json` is current
+- confirm `public/gita.json` is current
 - run `npm run typecheck`
 - run `npm run test -- --run`
 - run `npm run build`

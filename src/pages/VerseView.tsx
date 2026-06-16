@@ -208,11 +208,11 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
                         />
                     </div>
                 ) : learningComicImageUrl ? (
-                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-1 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
+                    <div className="overflow-hidden rounded-[1.75rem] bg-[#fbf7ef] p-0 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:bg-[#191714]">
                         <img
                             src={learningComicImageUrl}
                             alt={`Learning comic ${chapterNum}.${verseNum}`}
-                            className="block h-auto w-full rounded-[1.15rem] object-contain"
+                            className="block h-auto w-full object-contain"
                             loading="lazy"
                         />
                     </div>
