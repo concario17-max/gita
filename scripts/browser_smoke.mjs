@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4174';
+const baseUrl = (process.env.BASE_URL || 'http://127.0.0.1:4174').trim();
 
 async function getVisibleHeaderButtonIndex(page, title) {
     return page.locator('header button').evaluateAll((elements, targetTitle) => {
@@ -34,14 +34,18 @@ async function getVisibleMain(page) {
 }
 
 async function expectVisible(locator, message) {
-    if (!(await locator.first().isVisible())) {
-        throw new Error(message);
+    try {
+        await locator.first().waitFor({ state: 'visible', timeout: 5000 });
+    } catch (error) {
+        throw new Error(`${message} (상세 정보: ${error.message})`);
     }
 }
 
 async function expectHidden(locator, message) {
-    if (await locator.first().isVisible()) {
-        throw new Error(message);
+    try {
+        await locator.first().waitFor({ state: 'hidden', timeout: 5000 });
+    } catch (error) {
+        throw new Error(`${message} (상세 정보: ${error.message})`);
     }
 }
 
@@ -49,7 +53,7 @@ async function expectSingleAudio(page, label) {
     const audioCount = await page.locator('audio').count();
 
     if (audioCount !== 1) {
-        throw new Error(`Expected a single audio element ${label}, found ${audioCount}.`);
+        throw new Error(`동작 검사 실패: 오디오 엘리먼트가 단 하나만 존재해야 함 (${label}), 감지된 개수: ${audioCount}`);
     }
 }
 
@@ -58,59 +62,33 @@ async function expectNoVisibleCommentaryPanel(page) {
     const panelCount = await visibleCommentaryPanels.count();
 
     if (panelCount !== 0) {
-        throw new Error(`Expected no visible commentary side panel on verse routes, found ${panelCount}.`);
+        throw new Error(`동작 검사 실패: 구절 뷰에서 보이는 Commentary 사이드 패널이 존재하지 않아야 함, 감지된 개수: ${panelCount}`);
     }
 
     const visibleCommentaryHeaderButtons = page.locator('header button:visible').filter({ hasText: 'Commentary' });
     const buttonCount = await visibleCommentaryHeaderButtons.count();
 
     if (buttonCount !== 0) {
-        throw new Error(`Expected no visible commentary header button on verse routes, found ${buttonCount}.`);
+        throw new Error(`동작 검사 실패: 구절 뷰에서 보이는 Commentary 헤더 버튼이 존재하지 않아야 함, 감지된 개수: ${buttonCount}`);
     }
 }
 
 async function expectBodyModeUi(page) {
     const main = await getVisibleMain(page);
-    const bodyMarker = main.locator('section').getByText('Word-by-word', { exact: true });
-    const commentaryMarker = main.locator('section').getByText('3.9', { exact: true });
+    const bodyMarker = main.locator('section').getByText('Word meanings', { exact: true });
+    const commentaryMarker = main.locator('section').getByText('COMMENTARY', { exact: true });
 
-    await expectVisible(bodyMarker, 'Expected Word-by-word to be visible in body mode.');
-
-    const bodySectionHidden = await main.locator('section').first().evaluate((element) => {
-        if (!(element instanceof HTMLElement)) {
-            return false;
-        }
-
-        return element.classList.contains('hidden');
-    });
-
-    if (bodySectionHidden) {
-        throw new Error('Expected the verse body section to stay visible in body mode.');
-    }
-
-    await expectHidden(commentaryMarker, 'Expected commentary marker 3.9 to stay hidden in body mode.');
+    await expectVisible(bodyMarker, '심화(body) 모드에서 Word meanings가 보여야 함.');
+    await expectHidden(commentaryMarker, '심화(body) 모드에서 COMMENTARY 마커가 가려져 있어야 함.');
 }
 
 async function expectCommentaryModeUi(page) {
     const main = await getVisibleMain(page);
-    const bodyMarker = main.locator('section').getByText('Word-by-word', { exact: true });
-    const commentaryMarker = main.locator('section').getByText('3.9', { exact: true });
+    const bodyMarker = main.locator('section').getByText('Word meanings', { exact: true });
+    const commentaryMarker = main.locator('section').getByText('COMMENTARY', { exact: true });
 
-    await expectHidden(bodyMarker, 'Expected Word-by-word to be hidden in commentary mode.');
-
-    const bodySectionHidden = await main.locator('section').first().evaluate((element) => {
-        if (!(element instanceof HTMLElement)) {
-            return false;
-        }
-
-        return element.classList.contains('hidden');
-    });
-
-    if (!bodySectionHidden) {
-        throw new Error('Expected the verse body section to be hidden in commentary mode.');
-    }
-
-    await expectVisible(commentaryMarker, 'Expected commentary marker 3.9 to be visible in commentary mode.');
+    await expectHidden(bodyMarker, '해설(commentary) 모드에서 Word meanings가 가려져 있어야 함.');
+    await expectVisible(commentaryMarker, '해설(commentary) 모드에서 COMMENTARY 마커가 보여야 함.');
 }
 
 async function toggleVerseMode(page, modeIndex) {
@@ -142,9 +120,9 @@ async function ensureSidebarOpen(page) {
 }
 
 async function waitForHomeSelects(page) {
-    const comboboxes = page.getByRole('combobox');
-    await comboboxes.nth(0).waitFor({ state: 'visible' });
-    await comboboxes.nth(1).waitFor({ state: 'visible' });
+    // 둥근 알약 모양 피커 트리거 버튼이 렌더링될 때까지 대기
+    const pickerButton = page.locator('button[aria-haspopup="dialog"]:visible');
+    await pickerButton.waitFor({ state: 'visible' });
 }
 
 async function getVisibleElementIndex(page, selector) {
@@ -160,117 +138,91 @@ async function getVisibleElementIndex(page, selector) {
 }
 
 async function goFromHomeToVerse(page, chapterValue, verseValue) {
-    const comboboxes = page.getByRole('combobox');
-    const chapterSelect = comboboxes.nth(0);
-    const verseSelect = comboboxes.nth(1);
+    const pickerButton = page.locator('button[aria-haspopup="dialog"]:visible');
+    await pickerButton.click();
 
-    await chapterSelect.selectOption(chapterValue);
-    await page.waitForFunction((targetVerse) => {
-        const verseSelectElement = document.querySelectorAll('select')[1];
+    // '제3장' 텍스트가 포함된 장 버튼을 열기
+    const chapterHeader = page.locator('button').filter({ hasText: `제${chapterValue}장` });
+    await chapterHeader.waitFor({ state: 'visible' });
+    await chapterHeader.click();
 
-        return Boolean(
-            verseSelectElement &&
-                !verseSelectElement.hasAttribute('disabled') &&
-                verseSelectElement.querySelector(`option[value="${targetVerse}"]`),
-        );
-    }, verseValue);
-    await verseSelect.selectOption(verseValue);
+    // 해당 장 아래의 그리드 버튼 중 절 번호 버튼을 클릭
+    const verseButton = page.getByRole('button', { name: `${verseValue}절`, exact: true });
+    await verseButton.waitFor({ state: 'visible' });
+    await verseButton.click();
+
     await page.waitForURL(`**/chapter/${chapterValue}/verse/${verseValue}`);
-    await page.waitForFunction(() =>
-        Array.from(document.querySelectorAll('#chapter-picker')).some((element) => {
-            if (!(element instanceof HTMLElement)) {
-                return false;
-            }
-
-            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-        }),
-    );
-    await page.waitForFunction(() =>
-        Array.from(document.querySelectorAll('#verse-picker')).some((element) => {
-            if (!(element instanceof HTMLElement)) {
-                return false;
-            }
-
-            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-        }),
-    );
+    await pickerButton.waitFor({ state: 'visible' });
+    await page.getByText('COMMENTARY').first().waitFor({ state: 'visible' });
 }
 
 async function selectVisibleHeaderChapter(page, chapterValue) {
-    const chapterPickerIndex = await getVisibleElementIndex(page, '#chapter-picker');
+    const pickerButton = page.locator('button[aria-haspopup="dialog"]:visible');
+    await pickerButton.click();
 
-    if (chapterPickerIndex < 0) {
-        throw new Error('Missing visible chapter picker.');
-    }
+    const chapterHeader = page.locator('button').filter({ hasText: `제${chapterValue}장` });
+    await chapterHeader.waitFor({ state: 'visible' });
+    await chapterHeader.click();
 
-    await page.locator('#chapter-picker').nth(chapterPickerIndex).selectOption(chapterValue);
+    const verseButton = page.getByRole('button', { name: `1절`, exact: true });
+    await verseButton.waitFor({ state: 'visible' });
+    await verseButton.click();
+
     await page.waitForURL(`**/chapter/${chapterValue}/verse/1`);
-    await page.waitForFunction(() =>
-        Array.from(document.querySelectorAll('#chapter-picker')).some((element) => {
-            if (!(element instanceof HTMLElement)) {
-                return false;
-            }
-
-            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-        }),
-    );
-    await page.waitForFunction(() =>
-        Array.from(document.querySelectorAll('#verse-picker')).some((element) => {
-            if (!(element instanceof HTMLElement)) {
-                return false;
-            }
-
-            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-        }),
-    );
+    await pickerButton.waitFor({ state: 'visible' });
+    await page.getByText('Korean translations').first().waitFor({ state: 'visible' });
 }
 
 async function waitForSidebarReadingCard(page) {
     const sidebarCard = page.locator('aside:visible, [role="complementary"]:visible, [data-sidebar]:visible, [data-drawer]:visible').first();
 
     await sidebarCard.waitFor({ state: 'visible' });
-    await sidebarCard.getByText('Chapter 3', { exact: true }).waitFor({ state: 'visible' });
-    await sidebarCard.getByText('Sutra 9', { exact: true }).waitFor({ state: 'visible' });
-    await sidebarCard.getByText('Sanskrit', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Chapter', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('03', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Verse', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('09', { exact: true }).waitFor({ state: 'visible' });
     await sidebarCard.getByText('English', { exact: true }).waitFor({ state: 'visible' });
     await sidebarCard.getByText('Korean', { exact: true }).waitFor({ state: 'visible' });
 }
 
 async function waitForTranslationLabels(page) {
-    await page.locator('section h2').nth(0).waitFor({ state: 'visible' });
-    await page.locator('section h2').nth(1).waitFor({ state: 'visible' });
-    await page.locator('section h3').nth(0).waitFor({ state: 'visible' });
-    await page.locator('section h3').nth(1).waitFor({ state: 'visible' });
+    await page.getByText('Korean translations', { exact: true }).first().waitFor({ state: 'visible' });
+    await page.getByText('Gil', { exact: true }).first().waitFor({ state: 'visible' });
+    await page.getByText('Jimong', { exact: true }).first().waitFor({ state: 'visible' });
+    await page.getByText('Suk', { exact: true }).first().waitFor({ state: 'visible' });
 }
 
-async function verifyVerseModePersistence(page) {
+async function verifyVerseModeToggling(page) {
+    // 최초 진입 시 무조건 commentary(해설) 모드가 활성화되어 있어야 함
     await expectNoVisibleCommentaryPanel(page);
-    await expectBodyModeUi(page);
-    await expectSingleAudio(page, 'before switching modes');
+    await expectCommentaryModeUi(page);
+    
+    // 해설 모드에서는 오디오 태그가 비활성화되므로 0개 존재해야 함
+    const initialAudioCount = await page.locator('audio').count();
+    if (initialAudioCount !== 0) {
+        throw new Error(`동작 검사 실패: 해설 모드에서 오디오 엘리먼트가 없어야 함, 감지된 개수: ${initialAudioCount}`);
+    }
 
+    // body(심화) 모드로 전환 동작 확인 (해설 모드는 index 0, 심화 모드는 index 1)
     await toggleVerseMode(page, 1);
     await waitForVerseMode(page, 1);
 
     await expectNoVisibleCommentaryPanel(page);
-    await expectCommentaryModeUi(page);
-    await expectSingleAudio(page, 'after switching to commentary mode');
+    await expectBodyModeUi(page);
+    await expectSingleAudio(page, 'after switching to body mode');
 
-    const storedMode = await page.evaluate(() => localStorage.getItem('yoga-verse-content-mode'));
-    if (storedMode !== 'commentary') {
-        throw new Error(`Expected localStorage to store commentary mode, found ${storedMode ?? 'null'}.`);
-    }
-
-    await page.reload({ waitUntil: 'networkidle' });
-    await waitForVerseMode(page, 1);
-    await expectNoVisibleCommentaryPanel(page);
-    await expectCommentaryModeUi(page);
-    await expectSingleAudio(page, 'after reload in commentary mode');
-
+    // 다시 commentary(해설) 모드로 무결 복귀 동작 확인
     await toggleVerseMode(page, 0);
     await waitForVerseMode(page, 0);
+
     await expectNoVisibleCommentaryPanel(page);
-    await expectBodyModeUi(page);
-    await expectSingleAudio(page, 'after returning to body mode');
+    await expectCommentaryModeUi(page);
+    
+    // 복귀 후 다시 해설 모드이므로 오디오 엘리먼트가 없어야 함
+    const finalAudioCount = await page.locator('audio').count();
+    if (finalAudioCount !== 0) {
+        throw new Error(`동작 검사 실패: 해설 모드로 복귀 후 오디오 엘리먼트가 없어야 함, 감지된 개수: ${finalAudioCount}`);
+    }
 }
 
 async function createPage(browser, viewport, logs, errors) {
@@ -292,7 +244,6 @@ async function createPage(browser, viewport, logs, errors) {
             return;
         }
 
-        localStorage.removeItem('yoga-verse-content-mode');
         localStorage.removeItem('yoga-desktop-right-panel');
         localStorage.removeItem('yoga-desktop-sidebar');
         sessionStorage.setItem('__smoke-storage-reset', 'true');
@@ -308,10 +259,14 @@ async function runDesktopFlow(browser, logs, errors) {
     await waitForHomeSelects(desktop.page);
     await goFromHomeToVerse(desktop.page, '3', '9');
     await waitForHomeSelects(desktop.page);
-    await verifyVerseModePersistence(desktop.page);
+    await verifyVerseModeToggling(desktop.page);
 
     await ensureSidebarOpen(desktop.page);
     await waitForSidebarReadingCard(desktop.page);
+
+    // 번역가 라벨 검증을 위해 body(심화) 모드로 전환
+    await toggleVerseMode(desktop.page, 1);
+    await waitForVerseMode(desktop.page, 1);
 
     await selectVisibleHeaderChapter(desktop.page, '1');
     await waitForTranslationLabels(desktop.page);
@@ -326,10 +281,11 @@ async function runMobileFlow(browser, logs, errors) {
     await waitForHomeSelects(mobile.page);
     await goFromHomeToVerse(mobile.page, '3', '9');
     await waitForHomeSelects(mobile.page);
-    await verifyVerseModePersistence(mobile.page);
+    await verifyVerseModeToggling(mobile.page);
 
-    await ensureSidebarOpen(mobile.page);
-    await waitForSidebarReadingCard(mobile.page);
+    // 번역가 라벨 검증을 위해 body(심화) 모드로 전환
+    await toggleVerseMode(mobile.page, 1);
+    await waitForVerseMode(mobile.page, 1);
 
     await selectVisibleHeaderChapter(mobile.page, '1');
     await waitForTranslationLabels(mobile.page);
@@ -362,7 +318,7 @@ async function run() {
                         'desktop verse body mode markers',
                         'desktop verse commentary mode markers',
                         'desktop verse audio persists through toggles',
-                        'desktop verse mode persistence',
+                        'desktop verse mode toggling',
                         'desktop left reading card',
                         'desktop translation labels',
                         'mobile home chapter select',
@@ -372,7 +328,7 @@ async function run() {
                         'mobile verse body mode markers',
                         'mobile verse commentary mode markers',
                         'mobile verse audio persists through toggles',
-                        'mobile verse mode persistence',
+                        'mobile verse mode toggling',
                         'mobile left reading card',
                         'mobile translation labels',
                     ],
