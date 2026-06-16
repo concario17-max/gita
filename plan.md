@@ -198,3 +198,38 @@ Goal: synchronize the live app with the newly copied data source before any impl
   - [ ] `npm.cmd run typecheck` 통과 확인
   - [ ] `npm.cmd run build` 프로덕션 빌드 성공 확인
   - [ ] `npm.cmd run qa:browser` 스모크 QA 테스트 통과 확인 (테두리 제거 상태에서도 에러 없이 렌더 검증 완료)
+
+## 14. Bhagavad Gita Chapter 5-18 Commentary Dataset Import (5~18장 해설 데이터셋 임포트)
+
+### 14.1 문제점 분석
+- `src/data` 폴더 내부에는 오직 1~4장까지의 해설 파일(`chapter1Commentary.ts` ~ `chapter4Commentary.ts`)만 신설되어 존재함
+- 프로젝트 루트 경로에는 `바가바드 기타_5장 해설.odt`부터 `바가바드 기타_18장 해설.odt`까지의 원본 텍스트 데이터가 방치되어 있어 5장 이후의 해설 기능이 사실상 불능 상태임
+
+### 14.2 세분화된 TODO 리스트
+- [ ] 5장부터 18장까지의 해설 데이터 이식
+  - [ ] 각 ODT 파일 구조 검사 및 텍스트 데이터 정제 추출
+  - [ ] `src/data/` 하위에 `chapter5Commentary.ts`부터 `chapter18Commentary.ts`까지 각각 단일 책임 모듈로 신설
+  - [ ] 각 파일 내 텍스트에 한글 주석 적용 및 800라인 규칙 준수
+- [ ] `CommentarySidebar.tsx` 매핑 연동
+  - [ ] 신설된 5~18장 해설 데이터 객체들을 임포트하고 챕터 번호에 맞춰 동적 렌더링 맵핑 추가
+
+## 15. Stale Documentation & Dead Code Clean Up (문서 및 미사용 레거시 정리)
+
+### 15.1 문제점 분석
+- `README.md`에서 런타임 데이터 소스가 `public/data.json`으로 안내되고 있으나 실제 `dataFetcher.ts`에서는 `public/gita.json`을 호출하고 있어 문서 동기화 오류 발생
+- 라우팅 리다이렉션으로 인해 진입이 불가능한 `ChapterList.tsx` 및 하위 모달들(`CompendiumModal`, `LexiconModal`)이 사실상 미사용 레거시 코드로 방치되고 있음
+
+### 15.2 세분화된 TODO 리스트
+- [ ] `README.md` 문서 정합성 복원
+  - [ ] 데이터 소스 파일명 서술을 `public/gita.json`으로 동기화 갱신
+- [ ] 미사용 레거시 페이지 및 컴포넌트 리팩토링
+  - [ ] 홈 챕터 리스트(`ChapterList.tsx`)와 내장 모달들의 진입 통로 복원 여부 또는 깔끔한 청소 계획 수립
+
+## 16. Playwright Smoke Test Responsive Layout Assertion (스모크 테스트 반응형 검증 추가)
+
+### 16.1 문제점 분석
+- 최근에 적용 완료한 모바일 해상도(784px 이하)에서의 1단 레이아웃 제어 및 `MobileVerseGuide` 강제 활성화 여부를 Playwright가 자동으로 검증하지 않고 있어 회귀 방지가 어려움
+
+### 16.2 세분화된 TODO 리스트
+- [ ] `scripts/browser_smoke.mjs` 검증 케이스 주입
+  - [ ] 뷰포트를 784px 이하로 축소한 뒤 좌측 사이드바가 강제로 닫혀 있고 `MobileVerseGuide` 배너가 켜져 있는지 확인하는 Assertion 추가
