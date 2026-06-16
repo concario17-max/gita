@@ -180,3 +180,21 @@ Goal: synchronize the live app with the newly copied data source before any impl
 - [ ] Freeze the exact files that must be regenerated versus preserved.
 - [ ] Freeze the list of UI surfaces that will need to be updated.
 - [ ] Only then start implementation in a separate pass.
+
+## 13. Verse Panel Chrome & Comic Padding Optimization (구절 패널 테두리 제거 및 코믹 패딩 최적화)
+
+### 13.1 문제점 분석
+- 공유 구절 패널 자체의 외곽에 불필요한 경계선이 남아 있는지 검토하고 헤더 구분선은 건드리지 않고 유지해야 함
+- `VerseView.tsx` 내부 `CommentaryContent` 컴포넌트에서 학습만화 이미지를 래핑하는 `div`에 테두리(`border border-gold-border/12`)와 `p-1` 패딩이 중첩되어 만화 이미지가 작아 보이고 시각적 노이즈를 만듦
+
+### 13.2 세분화된 TODO 리스트
+- [ ] `src/pages/VerseView.tsx` 내 코믹 이미지 영역 리팩토링
+  - [ ] 학습만화 이미지 래퍼 `div`에서 `border border-gold-border/12` 및 `dark:border-dark-border/50` 등 외곽 테두리 제거
+  - [ ] 래퍼 패딩 `p-1`을 `p-0` 등으로 축소해 만화 뷰 크기 확대 구현
+- [ ] `src/components/verse/VersePanelCard.tsx` 크롬 검토 및 청소
+  - [ ] 카드 자체의 외부 보더 제거 여부 재검토 및 그림자(shadow) 기반 접지 유지 확인
+  - [ ] 카드 헤더 하단 구분선(`border-b border-gold-border/8`) 및 섹션 내부선은 그대로 보존
+- [ ] 품질 보증 및 통합 검증 실행
+  - [ ] `npm.cmd run typecheck` 통과 확인
+  - [ ] `npm.cmd run build` 프로덕션 빌드 성공 확인
+  - [ ] `npm.cmd run qa:browser` 스모크 QA 테스트 통과 확인 (테두리 제거 상태에서도 에러 없이 렌더 검증 완료)
